@@ -6,5 +6,6 @@
 - Accident.java中增加了prohibitRegion，以排除广告牌干扰，抛洒物检测区域的变量名改为detectRegion
 
 ### Python
-~~明瑞写这里！~~
+- yolov3 + Centertrack
+- GMM检测抛洒物（带region)
 
