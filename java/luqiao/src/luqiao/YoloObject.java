@@ -12,3 +12,4 @@ public class YoloObject {
         this.tracking_id = -1;
     }
 }
+

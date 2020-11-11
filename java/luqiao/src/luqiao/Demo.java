@@ -10,15 +10,15 @@ import org.opencv.video.*;
 import org.opencv.imgproc.*;
 
 public class Demo {
-    public static String TXT_PATH = "D:\\b.txt";              // txt文件路径
-    public static String VIDEO_PATH = "D:\\a.avi";            // 读取视频文件路径
-    public static String SAVE_PATH = "d:/o.avi";              // 存储视频文件路径
+    public static String TXT_PATH = "D:\\txt\\2.txt";              // txt文件路径
+    public static String VIDEO_PATH = "D:\\txt\\2.avi";            // 读取视频文件路径
+    public static String SAVE_PATH = "d:/test_2.avi";              // 存储视频文件路径
     public static String detectRegion = "";                   // 抛洒物检测区域
     public static String prohibitRegion = "";      // 不检测区域
     public static String crossLines = "245,957,1186,277-1186,277,1282,181-672,994,1303,319-1303,319,1377,185";  //道路线信息
     public static double objectScore = 0.6;                   // 检测框阈值
     public static int framePerSecond = 5;                     // 每秒取的视频帧个数
-    public static MySVM mySVM = new MySVM("d:/aaa.xml"); // 加载SVM模型
+    public static MySVM mySVM = new MySVM("d:/SVM128x128.xml"); // 加载SVM模型
     public static BackgroundSubtractorMOG2 fgbg =  Video.createBackgroundSubtractorMOG2(1000, 800);
     public static Accident accident = new Accident();
     public static Tracker tracker = new Tracker();
