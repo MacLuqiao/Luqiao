@@ -14,7 +14,7 @@ import java.awt.geom.GeneralPath;
 
 public class Accident {
     // DEBUG MODE
-    public static boolean _DEBUGGER_ = false;
+    public static boolean _DEBUGGER_ = true;
 
     // Video params
     public static int video_w = 1920;
@@ -49,7 +49,7 @@ public class Accident {
 
     //luyao11.10//
     // Spill
-    static List<Point2D.Double> region = new ArrayList<>();
+//    static List<Point2D.Double> region = new ArrayList<>();
 
     // Park
     static boolean park_switch = true;                           // 停车事件检测开关
@@ -81,7 +81,7 @@ public class Accident {
 
     public Accident(){
         init_retrograde_line();
-        init_region();//luyao11.10//
+//        init_region();//luyao11.10//
     }
 
     static void init_detect_region(String lineInforms){
@@ -204,104 +204,6 @@ public class Accident {
                 }
             }
         }
-    }
-
-    //luyao11.10//
-    static void init_region(){
-        //存储阵列3_翔安隧道右洞出岛110#灭火器
-//        Point2D.Double tl = new Point2D.Double(869,104);
-//        Point2D.Double tr = new Point2D.Double(1025,94);
-//        Point2D.Double bl = new Point2D.Double(1907,1035);
-//        Point2D.Double br = new Point2D.Double(80,996);
-
-
-        //22存储器_杏林大桥中间53#灯杆出岛方向
-//        Point2D.Double tl = new Point2D.Double(287, 96);
-//        Point2D.Double tr = new Point2D.Double(614, 70);
-//        Point2D.Double bl = new Point2D.Double(1899, 512);
-//        Point2D.Double br = new Point2D.Double(293, 1071);
-
-
-//    	//22_20201002205400_20201002205700
-//    	Point2D.Double tl = new Point2D.Double(286,273);
-//    	Point2D.Double tr = new Point2D.Double(756, 186);
-//    	Point2D.Double bl = new Point2D.Double(1914, 716);
-//    	Point2D.Double br = new Point2D.Double(253,1065);
-//
-
-
-//    	//20_20201003145100_20201003145359
-//    	Point2D.Double tl = new Point2D.Double(480, 124);
-//    	Point2D.Double tr = new Point2D.Double(792, 127);
-//    	Point2D.Double bl = new Point2D.Double(1914, 771);
-//    	Point2D.Double br = new Point2D.Double(416, 1068);
-//
-
-
-//    	//22_20200930170600_20200930170800
-//    	Point2D.Double tl = new Point2D.Double(261, 174);
-//    	Point2D.Double tr = new Point2D.Double(891, 172);
-//    	Point2D.Double bl = new Point2D.Double(1912, 473);
-//    	Point2D.Double br = new Point2D.Double(142, 1061);
-//
-
-//
-//    	//21_20201003160900_20201003161259
-//    	Point2D.Double tl = new Point2D.Double(520, 91);
-//    	Point2D.Double tr = new Point2D.Double(823, 28);
-//    	Point2D.Double bl = new Point2D.Double(1916, 590);
-//    	Point2D.Double br = new Point2D.Double(370, 1056);
-
-//    	//6_1
-//    	Point2D.Double tl = new Point2D.Double(846, 51);
-//    	Point2D.Double tr = new Point2D.Double(1122, 94);
-//    	Point2D.Double bl = new Point2D.Double(1908, 732);
-//    	Point2D.Double br = new Point2D.Double(9, 1004);
-
-
-        //2(163-192)_1
-        Point2D.Double tl = new Point2D.Double(934, 122);
-        Point2D.Double tr = new Point2D.Double(1198, 132);
-        Point2D.Double bl = new Point2D.Double(1335, 1058);
-        Point2D.Double br = new Point2D.Double(9, 519);
-
-
-
-//    	//5_1
-//    	Point2D.Double tl = new Point2D.Double(808, 141);
-//    	Point2D.Double tr = new Point2D.Double(1135, 122);
-//    	Point2D.Double bl = new Point2D.Double(1890, 824);
-//    	Point2D.Double br = new Point2D.Double(6, 914);
-
-
-//    	//3(88-93 94-114 245-247)_1
-//    	Point2D.Double tl = new Point2D.Double(471, 413);
-//    	Point2D.Double tr = new Point2D.Double(745, 375);
-//    	Point2D.Double bl = new Point2D.Double(1903, 853);
-//    	Point2D.Double br = new Point2D.Double(484, 1070);
-
-//    	//7(193-222)_1
-//    	Point2D.Double tl = new Point2D.Double(1419, 120);
-//    	Point2D.Double tr = new Point2D.Double(1816, 151);
-//    	Point2D.Double bl = new Point2D.Double(1785, 1035);
-//    	Point2D.Double br = new Point2D.Double(6, 789);
-
-//    	//4_1
-//    	Point2D.Double tl = new Point2D.Double(784, 73);
-//    	Point2D.Double tr = new Point2D.Double(1089, 82);
-//    	Point2D.Double bl = new Point2D.Double(1911, 770);
-//    	Point2D.Double br = new Point2D.Double(1, 905);
-
-        //1(163-192)_1
-//        Point2D.Double tl = new Point2D.Double(1101, 144);
-//        Point2D.Double tr = new Point2D.Double(1395, 184);
-//        Point2D.Double bl = new Point2D.Double(1509, 1046);
-//        Point2D.Double br = new Point2D.Double(11, 716);
-        region.add(tl);
-        region.add(tr);
-        region.add(bl);
-        region.add(br);
-        System.out.print(region);
     }
 
     // 同时检测park & jam
@@ -627,8 +529,12 @@ public class Accident {
         // Spill
         if(spill_switch){
             for (DetectBox s_box : spi_box)
-                if(check_box_in_region(s_box, "detect"))
+                if(check_box_in_region(s_box, "detect")){
                     accidentInforms.add(new AccidentInform(4, -1, s_box));
+                    System.out.println("检测到抛洒物事件！！！");
+//                    System.exit(0);
+                }
+
         }
 
         return accidentInforms;

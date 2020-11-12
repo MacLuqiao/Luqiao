@@ -8,12 +8,16 @@ import org.opencv.core.*;
 import org.opencv.videoio.*;
 import org.opencv.video.*;
 import org.opencv.imgproc.*;
+//c3
+//            lineInforms = "869,104-1025,94-1907,1035-80,996";
 
+//c22
+//            lineInforms = "287,96-614,70-1899,512-293,1071";
 public class Demo {
-    public static String TXT_PATH = "D:\\txt\\2.txt";              // txt文件路径
-    public static String VIDEO_PATH = "D:\\txt\\2.avi";            // 读取视频文件路径
-    public static String SAVE_PATH = "d:/test_2.avi";              // 存储视频文件路径
-    public static String detectRegion = "";                   // 抛洒物检测区域
+    public static String TXT_PATH = "D:\\b.txt";              // txt文件路径
+    public static String VIDEO_PATH = "D:\\a.avi";            // 读取视频文件路径
+    public static String SAVE_PATH = "d:/test_c22_61_53.avi";              // 存储视频文件路径
+    public static String detectRegion = "287,96-614,70-1899,512-293,1071";                   // 抛洒物检测区域
     public static String prohibitRegion = "";      // 不检测区域
     public static String crossLines = "245,957,1186,277-1186,277,1282,181-672,994,1303,319-1303,319,1377,185";  //道路线信息
     public static double objectScore = 0.6;                   // 检测框阈值
@@ -99,9 +103,8 @@ public class Demo {
                 List<DetectBox> fgBox = gmm.fg_box();
                 // 检测事件
                 List<AccidentInform> accidentInforms = Accident.checkAccident(tracker.track_box, fgBox, detectRegion, prohibitRegion, crossLines);
-                Mat img = new Mat();
                 // 画框
-                DrawUtils.draw(img, accidentInforms, crossLines);
+                DrawUtils.draw(frame, accidentInforms, crossLines);
             }
             cnt++;
             writer.write(frame);
