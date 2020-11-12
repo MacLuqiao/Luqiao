@@ -21,7 +21,7 @@ public class MySVM {
      * @param _cellSize 胞元，胞元是在块中。
      * @param _nbins 检测方向 在一个胞元内统计9个方向的梯度直方图，每个方向为180/9=20度。
      */
-    public static Size HOG_winSize = new Size(64, 128);
+    public static Size HOG_winSize = new Size(64, 64);
     public static Size HOG_blockSize = new Size(16, 16);
     public static Size HOG_blockStride = new Size(8, 8);
     public static Size HOG_cellSize = new Size(8, 8);
@@ -40,11 +40,6 @@ public class MySVM {
 
     public MySVM(String path){
         System.out.println("开始加载SVM");
-        File file = new File(path);
-        if(file.exists())
-            System.out.println("文件存在！！！！！！");
-        else
-            System.out.println("文件不存在！！！！！");
         long start = System.currentTimeMillis();
         svm = SVM.load(path);
         System.out.println("加载SVM成功，用时："+(System.currentTimeMillis()-start)+"ms");
@@ -99,7 +94,7 @@ public class MySVM {
         boolean success = svm.train(data, Ml.ROW_SAMPLE, label);
         System.out.println("SVM训练完成");
         System.out.println(success);
-        svm.save("d:/aaa.xml");
+        svm.save("d:/SVM128x128.xml");
         System.out.println("成功保存SVM模型");
     }
 

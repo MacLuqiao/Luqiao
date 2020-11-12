@@ -8,10 +8,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+//luyao11.10//
+import java.awt.geom.Point2D;
+import java.awt.geom.GeneralPath;
 
 public class Accident {
     // DEBUG MODE
-    public static boolean _DEBUGGER_ = false;
+    public static boolean _DEBUGGER_ = true;
 
     // Video params
     public static int video_w = 1920;
@@ -44,6 +47,10 @@ public class Accident {
     static boolean person_switch = true;
     static double person_conf_thres = 0.8;                      // 行人置信度阈值
 
+    //luyao11.10//
+    // Spill
+//    static List<Point2D.Double> region = new ArrayList<>();
+
     // Park
     static boolean park_switch = true;                           // 停车事件检测开关
     static double park_pos_factor = 0.1;                         // 位移计算因子
@@ -74,6 +81,7 @@ public class Accident {
 
     public Accident(){
         init_retrograde_line();
+//        init_region();//luyao11.10//
     }
 
     static void init_detect_region(String lineInforms){
@@ -197,6 +205,7 @@ public class Accident {
             }
         }
     }
+
     // 同时检测park & jam
     static Map<String, Boolean> check_park_jam(DetectBox frame_info_p1, DetectBox frame_info_p2) {
         double box_area = (frame_info_p1.right - frame_info_p1.left) * (frame_info_p1.bottom - frame_info_p1.top);
@@ -520,8 +529,12 @@ public class Accident {
         // Spill
         if(spill_switch){
             for (DetectBox s_box : spi_box)
-                if(check_box_in_region(s_box, "spill"))
+                if(check_box_in_region(s_box, "detect")){
                     accidentInforms.add(new AccidentInform(4, -1, s_box));
+                    System.out.println("检测到抛洒物事件！！！");
+//                    System.exit(0);
+                }
+
         }
 
         return accidentInforms;
