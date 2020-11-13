@@ -14,10 +14,19 @@ import org.opencv.imgproc.*;
 //c22
 //            lineInforms = "287,96-614,70-1899,512-293,1071";
 public class Demo {
-    public static String TXT_PATH = "D:\\b.txt";              // txt文件路径
-    public static String VIDEO_PATH = "D:\\a.avi";            // 读取视频文件路径
-    public static String SAVE_PATH = "d:/test_c22_61_53.avi";              // 存储视频文件路径
-    public static String detectRegion = "287,96-614,70-1899,512-293,1071";                   // 抛洒物检测区域
+    public static String TXT_PATH = "D:\\luqiao_video\\paosawu_1101_1112\\x_67_201_25.txt";              // txt文件路径
+    public static String VIDEO_PATH = "D:\\luqiao_video\\paosawu_1101_1112\\x_67_201_25.mp4";            // 读取视频文件路径
+    public static String SAVE_PATH = "D:\\luqiao_video\\paosawu_1101_1112\\out_x_67_201_25.avi";              // 存储视频文件路径
+    //c22
+//    public static String detectRegion = "287,96-614,70-1899,512-293,1071";                   // 抛洒物检测区域
+    //c1_210
+//    public static String detectRegion = "721,231-1035,210-1846,898-105,993";                   // 抛洒物检测区域
+    //c3_105 c3_110 c3_125
+//    public static String detectRegion = "758,208-1170,183-1834,856-195,892";                   // 抛洒物检测区域
+    //c4_220
+//    public static String detectRegion = "944,152-1324,144-1907,811-376,773";                   // 抛洒物检测区域
+    //c4_215
+    public static String detectRegion = "717,246-1086,221-1801,966-129,919";                   // 抛洒物检测区域
     public static String prohibitRegion = "";      // 不检测区域
     public static String crossLines = "245,957,1186,277-1186,277,1282,181-672,994,1303,319-1303,319,1377,185";  //道路线信息
     public static double objectScore = 0.6;                   // 检测框阈值

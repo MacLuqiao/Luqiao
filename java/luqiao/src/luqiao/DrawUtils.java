@@ -20,7 +20,7 @@ public class DrawUtils {
         int[] baseline = new int[1];
         Size cat_size = Imgproc.getTextSize(accident, font, fontsize, thickness,baseline);
         if(accident.equals("jam"))
-            Imgproc.putText(img, "jam", new Point(30,70), 0, 1, redPaint);
+            Imgproc.putText(img, "jam", new Point(30,70), 2, 10, redPaint);
         else if(accident.equals("no")) {
             Imgproc.rectangle(img, new Point(box.left, box.top), new Point(box.right, box.bottom), greenPaint, thickness);
             Imgproc.rectangle(img, new Point(box.left, box.top-cat_size.height-thickness), new Point(box.left+cat_size.width+thickness, box.top), greenPaint, -1);
