@@ -68,6 +68,9 @@ public class DrawUtils {
             case 3:
                 res = "person";
                 break;
+            case 4:
+                res = "spill";
+                break;
             case 5:
                 res = "jam";
                 break;

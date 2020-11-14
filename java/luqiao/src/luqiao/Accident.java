@@ -8,9 +8,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-//luyao11.10//
-import java.awt.geom.Point2D;
-import java.awt.geom.GeneralPath;
 
 public class Accident {
     // DEBUG MODE
@@ -33,7 +30,7 @@ public class Accident {
 
     // Jam
     static boolean jam_switch = true;                          // 拥堵事件检测开关
-    static int jam_frame_count_init = frame_per_second * 8;     //
+    static int jam_frame_count_init = frame_per_second * 12;     //
     static int jam_frame_count = 0;                             // 拥堵帧数
     static int jam_car_count_thres = 4;                         // 拥堵事件的车辆数量判断阈值
     static double jam_pos_thres;                                // 拥堵事件车辆位移阈值
@@ -47,9 +44,6 @@ public class Accident {
     static boolean person_switch = true;
     static double person_conf_thres = 0.8;                      // 行人置信度阈值
 
-    //luyao11.10//
-    // Spill
-//    static List<Point2D.Double> region = new ArrayList<>();
 
     // Park
     static boolean park_switch = true;                           // 停车事件检测开关
@@ -75,13 +69,12 @@ public class Accident {
     static int retrograde_pos_y_thres = 5;                                            // check_retrograde参数
 
     // Spill
-    static boolean spill_switch = false;   // 抛洒物事件检测开关
+    static boolean spill_switch = true;   // 抛洒物事件检测开关
     static List<MyPoint2D> detect_region = new ArrayList<MyPoint2D>();
     static List<MyPoint2D> prohibit_region = new ArrayList<MyPoint2D>();
 
     public Accident(){
         init_retrograde_line();
-//        init_region();//luyao11.10//
     }
 
     static void init_detect_region(String lineInforms){
@@ -432,6 +425,7 @@ public class Accident {
                                 if(!accident_track_ids.contains(tracking_id)) {
                                     accident_track_ids.add(tracking_id);
                                     accidentInforms.add(new AccidentInform(1, tracking_id, box));
+                                    System.out.println("11111检测到停车事件！！！");
                                 }
                             }
                             if(!park_frame_count.containsKey(tracking_id))
