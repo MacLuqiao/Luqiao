@@ -29,15 +29,15 @@ public class Accident {
     static Set<Integer> accident_track_ids = new HashSet<Integer>();   // 发生事件的id集合
 
     // Park & Jam
-    static int park_jam_time_thres = frame_per_second * 4;
+    static int park_jam_time_thres = frame_per_second * 2;
 
     // Jam
     static boolean jam_switch = true;                          // 拥堵事件检测开关
     static int jam_frame_count_init = frame_per_second * 8;     //
     static int jam_frame_count = 0;                             // 拥堵帧数
-    static int jam_car_count_thres = 5;                         // 拥堵事件的车辆数量判断阈值
+    static int jam_car_count_thres = 4;                         // 拥堵事件的车辆数量判断阈值
     static double jam_pos_thres;                                // 拥堵事件车辆位移阈值
-    static double jam_pos_factor = 1;                           // 位移计算因子
+    static double jam_pos_factor = 1.5;                           // 位移计算因子
     static double jam_box_area_min = 4000;                      // 拥堵最小box面积
     static boolean jam_flag = false;                            // 判断当前帧是否为拥堵帧
     static boolean jam_pre_flag = false;                        // 判断前一帧是否为拥堵帧
@@ -61,7 +61,7 @@ public class Accident {
     static Map<Integer, Integer> park_frame_count = new HashMap();
 
     // Cross
-    static boolean cross_switch = true;                                             // 变道事件检测开关
+    static boolean cross_switch = false;                                             // 变道事件检测开关
     static List<List<Integer>> cross_dict = new ArrayList<List<Integer>>();         // 变道线边缘点
     static List<List<Double>> cross_k_b_list = new ArrayList<List<Double>>();       // 变道线斜率 截距
     static Map<Integer, Map<Integer, Set<String>>> cross_id = new HashMap<Integer, Map<Integer, Set<String>>>(); // 记录变道信息
@@ -75,7 +75,7 @@ public class Accident {
     static int retrograde_pos_y_thres = 5;                                            // check_retrograde参数
 
     // Spill
-    static boolean spill_switch = true;   // 抛洒物事件检测开关
+    static boolean spill_switch = false;   // 抛洒物事件检测开关
     static List<MyPoint2D> detect_region = new ArrayList<MyPoint2D>();
     static List<MyPoint2D> prohibit_region = new ArrayList<MyPoint2D>();
 
@@ -209,21 +209,22 @@ public class Accident {
     // 同时检测park & jam
     static Map<String, Boolean> check_park_jam(DetectBox frame_info_p1, DetectBox frame_info_p2) {
         double box_area = (frame_info_p1.right - frame_info_p1.left) * (frame_info_p1.bottom - frame_info_p1.top);
-        Map<String, Boolean> park_jam = new HashMap<String, Boolean>();
+        Map<String, Boolean> park_jam = new HashMap<>();
         if(box_area < park_box_area_min) {
             park_jam.put("park", false);
         }
         else{
-            park_pos_thres = park_pos_factor * Math.max(frame_info_p1.right-frame_info_p1.left, frame_info_p1.bottom-frame_info_p1.left);
+            park_pos_thres = park_pos_factor * Math.min(frame_info_p1.right-frame_info_p1.left, frame_info_p1.bottom-frame_info_p1.top);
             park_jam.put("park", Math.pow(((Math.pow(frame_info_p1.right-frame_info_p2.right, 2)) + Math.pow(frame_info_p1.bottom-frame_info_p2.bottom, 2)), 0.5) <= park_pos_thres);
         }
         if(box_area < jam_box_area_min){
             park_jam.put("jam", false);
         }
         else {
-            jam_pos_thres = jam_pos_factor * Math.max(frame_info_p1.right-frame_info_p1.left, frame_info_p1.bottom-frame_info_p1.left);
+            jam_pos_thres = jam_pos_factor * Math.min(frame_info_p1.right-frame_info_p1.left, frame_info_p1.bottom-frame_info_p1.top);
             park_jam.put("jam", Math.pow(((Math.pow(frame_info_p1.right-frame_info_p2.right, 2)) + Math.pow(frame_info_p1.bottom-frame_info_p2.bottom, 2)), 0.5) <= jam_pos_thres);
         }
+
         return park_jam;
     }
 
@@ -414,7 +415,8 @@ public class Accident {
 
             // Jam & Park
             // 在2s前的缓存帧中寻找相同id车判断位移是否足够小，满足则（1）拥堵车数量增加（2）判断当前为停车
-            boolean no_jump = true; // jam_count 只加一次
+            boolean park_no_jump = true;
+            boolean jam_no_jump = true; // jam_count 只加一次
             if(!park_flag.containsKey(tracking_id))
                 park_flag.put(tracking_id, false);
             if(jam_switch && park_switch && frame_info_list.size() >= park_jam_time_thres){
@@ -423,6 +425,7 @@ public class Accident {
                         Map<String, Boolean> park_jam = check_park_jam(box, frame_info_list.get(i).get(tracking_id));
                         if(park_jam.get("park")){
                             park_flag.put(tracking_id, true);
+                            park_no_jump = false;
                             // 如果不是拥堵状态，则为停车
                             if(!jam_flag) {
                                 isAccident = true;
@@ -434,11 +437,11 @@ public class Accident {
                             if(!park_frame_count.containsKey(tracking_id))
                                 park_frame_count.put(tracking_id, park_count_init);
                         }
-                        if(park_jam.get("jam") && no_jump){
+                        if(park_jam.get("jam") && jam_no_jump){
                             jam_car_count++;
-                            no_jump = false;
+                            jam_no_jump = false;
                         }
-                        if(park_jam.get("park") && park_jam.get("jam"))
+                        if(!park_no_jump && !jam_no_jump)
                             break;
                     }
                 }
@@ -519,11 +522,15 @@ public class Accident {
                 jam_flag = true;
                 jam_frame_count --;
             }
+//            🤗
             else
                 jam_flag = false;
             // 如果是拥堵事件起始帧，则返回事件
-            if(!jam_pre_flag && jam_flag)
+            if(!jam_pre_flag && jam_flag){
                 accidentInforms.add(new AccidentInform(5, -1, new DetectBox()));
+                System.out.println("55555检测到拥堵物事件！！！");
+            }
+
         }
 
         // Spill
@@ -531,7 +538,7 @@ public class Accident {
             for (DetectBox s_box : spi_box)
                 if(check_box_in_region(s_box, "detect")){
                     accidentInforms.add(new AccidentInform(4, -1, s_box));
-                    System.out.println("检测到抛洒物事件！！！");
+                    System.out.println("44444检测到抛洒物事件！！！");
 //                    System.exit(0);
                 }
 
