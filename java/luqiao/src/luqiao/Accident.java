@@ -32,7 +32,7 @@ public class Accident {
     static int park_jam_time_thres = frame_per_second * 4;
 
     // Jam
-    static boolean jam_switch = false;                          // 拥堵事件检测开关
+    static boolean jam_switch = true;                          // 拥堵事件检测开关
     static int jam_frame_count_init = frame_per_second * 8;     //
     static int jam_frame_count = 0;                             // 拥堵帧数
     static int jam_car_count_thres = 5;                         // 拥堵事件的车辆数量判断阈值
