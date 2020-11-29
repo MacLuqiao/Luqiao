@@ -5,8 +5,8 @@
 ### Java
 
 - 拥堵和停车事件合并处理
-- 抛洒物还检测不出任何玩意儿
-- Accident.java中增加了prohibitRegion，以排除广告牌干扰，抛洒物检测区域的变量名改为detectRegion
+- 抛洒物存在大量误检，集中为大车白色部件
+- Accident.java中，指定detectRegion为抛洒物检测区域，指定prohibitRegion为禁止检测区域（排除广告牌干扰）
 
 ### Python
 
